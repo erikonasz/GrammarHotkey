@@ -34,8 +34,9 @@ Select some text and press `Ctrl+Alt+G`. Undo with `Ctrl+Z` in that app, as with
 
 ## Speed and usage
 
-Each correction starts a fresh `claude -p` process, so it takes a few seconds rather than being instant. Run
-`python tools/check_real_cli.py` to measure it on your PC.
+Each correction starts a fresh `claude -p` process, so it is not instant: in our tests with Sonnet a grammar fix
+took about 3 to 7 seconds, and the Professional mode up to about 10. Run `python tools/check_real_cli.py` to measure
+it on your PC.
 
 Requests count against your Claude plan's limits, the same as using Claude Code yourself. See Anthropic's page
 on [using `claude -p` with your plan](https://support.claude.com/en/articles/15036540). If `ANTHROPIC_API_KEY`
@@ -73,6 +74,8 @@ pictures, files).
 - **Ctrl+Alt is the same as AltGr** on many keyboards. The defaults G, P and R don't type anything with AltGr on
   the Lithuanian layouts we checked, but digits do (AltGr+1 is `@` on Lithuanian Standard). Settings warns about
   conflicts with the layouts you have installed.
+- **Tested** in Windows 11 Notepad and a Chrome textarea, with Lithuanian, English, German, French, Spanish, Polish
+  and Russian text. Other languages should work the same way.
 - **Not tested** in WhatsApp, Discord, Slack, Word or Outlook. They should work like any Ctrl+C / Ctrl+V app, and
   reports are welcome.
 - Windows only.

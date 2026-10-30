@@ -242,8 +242,9 @@ def window_process_name(hwnd: int) -> str:
         kernel32.CloseHandle(handle)
 
 
-def single_instance(name: str = "GrammarHotkey-single-instance") -> bool:
-    """Keeps the mutex for the life of the process."""
+def single_instance() -> bool:
+    """Keeps the mutex for the life of the process. A copy with its own config dir (tests) may run alongside."""
+    name = "GrammarHotkey-single-instance" + os.environ.get("GRAMMARHOTKEY_CONFIG_DIR", "").replace("\\", "/")
     handle = kernel32.CreateMutexW(None, False, name)
     return bool(handle) and ctypes.get_last_error() != 183  # ERROR_ALREADY_EXISTS
 

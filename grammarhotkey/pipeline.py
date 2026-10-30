@@ -101,7 +101,7 @@ class Pipeline:
         problem = self._replace(hwnd, seq_after_capture, text, checked.text, cfg)
         seconds = self.p.now() - started
         log.info("mode=%s model=%s chars=%d api=%.1fs total=%.1fs result=%s", mode.id, cfg.model, len(text),
-                 answer.seconds_api, seconds, "popup" if problem else "replaced")
+                 answer.seconds_api, seconds, f"popup ({problem})" if problem else "replaced")
         if problem:
             return Outcome(Status.POPUP, problem, text, checked.text, seconds)
         return Outcome(Status.REPLACED, "", text, checked.text, seconds)

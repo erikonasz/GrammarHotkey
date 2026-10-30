@@ -24,12 +24,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from grammarhotkey import winapi  # noqa: E402
+from grammarhotkey.config import GRAMMAR_PROMPT  # noqa: E402
 
 user32 = winapi.user32
 PY = str(ROOT / ".venv/Scripts/python.exe")
 FAKE = str(ROOT / "tests/fake_claude.cmd")
 POPUP_TITLE = "GrammarHotkey: not pasted"
 EXE = ""  # --exe: test the packaged build instead of the sources
+# Not the default shortcut, so the tests can run while the user's own copy holds Ctrl+Alt+G.
+TEST_HOTKEY = "Y"
 results: list[tuple[str, bool, str]] = []
 
 
@@ -97,7 +100,7 @@ def keys(*vks) -> None:
     time.sleep(0.08)
 
 
-def hotkey(letter="G", alt_first=False) -> None:
+def hotkey(letter=TEST_HOTKEY, alt_first=False) -> None:
     """Pressed like a person: the app gets time to react while the keys are down, then they come up."""
     vk = ord(letter)
     winapi._send([(winapi.VK_CONTROL, False), (winapi.VK_MENU, False), (vk, False)])
@@ -157,6 +160,8 @@ class App:
         self.count_file = workdir / "count.txt"
         self.set_mode("ok")
         self.count_file.write_text("", encoding="utf-8")
+        config.setdefault("modes", [{"id": "grammar", "name": "Grammar", "hotkey": f"Ctrl+Alt+{TEST_HOTKEY}",
+                                     "prompt": GRAMMAR_PROMPT, "strict": True}])
         (workdir / "config.json").write_text(json.dumps(config), encoding="utf-8")
         env = dict(os.environ, GRAMMARHOTKEY_CONFIG_DIR=str(workdir), FAKE_CLAUDE_MODE_FILE=str(self.mode_file),
                    FAKE_CLAUDE_COUNT_FILE=str(self.count_file))
@@ -192,7 +197,7 @@ class App:
         time.sleep(0.3)
 
 
-def wait_log(app: App, offset: int, pattern: str, timeout=15.0) -> bool:
+def wait_log(app, offset: int, pattern: str, timeout=15.0) -> bool:
     end = time.time() + timeout
     while time.time() < end:
         if re.search(pattern, app.log_lines_since(offset)):
@@ -227,12 +232,17 @@ def correction(app, hwnd, label, text, expected, patience=8) -> float:
     offset = len(app.log_text())
     start = time.perf_counter()
     hotkey()
-    wait_log(app, offset, r"result=replaced", patience)
+    replaced = wait_log(app, offset, r"result=replaced", patience)
     elapsed = time.perf_counter() - start
     clipboard_ok = sentinel_intact(html)
     still_focused = user32.GetForegroundWindow() == hwnd
+    if not replaced:
+        print("      log:", app.log_lines_since(offset).strip() or "nothing logged", flush=True)
+        close_popups()
+        activate(hwnd)
     doc = read_doc()
-    ok = doc.rstrip("\r\n") == expected if expected is not None else doc.rstrip("\r\n") != text
+    ok = replaced and bool(doc.strip()) and (doc.rstrip("\r\n") == expected if expected is not None
+                                             else doc.rstrip("\r\n") != text)
     record(f"{label}: corrected in place", ok, repr(doc[:70]))
     record(f"{label}: clipboard restored (text + html + picture)", clipboard_ok)
     record(f"{label}: focus stayed on the app", still_focused)
@@ -404,9 +414,9 @@ def real_suite(notepad, chrome, work: Path) -> None:
     app = App(work, timeout_s=90)
     timings = []
     try:
-        for hwnd, where in ((notepad, "Notepad"), (chrome, "Chrome")):
+        for hwnd, where in ((notepad, "Notepad"), (chrome, "Chrome")) * 2:
             for text, label in samples:
-                timings.append(correction(app, hwnd, f"{where} {label}", text, None, patience=90))
+                timings.append(correction(app, hwnd, f"{where} {label}", text, None, patience=40))
                 print("      ->", read_doc().replace("\r", "")[:200], flush=True)
         print(f"\nLatency over {len(timings)} real corrections: min {min(timings):.1f} s, "
               f"median {statistics.median(timings):.1f} s, max {max(timings):.1f} s")

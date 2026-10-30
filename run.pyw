@@ -1,5 +1,5 @@
 import sys
 
-from quickfix.app import main
+from grammarhotkey.app import main
 
 sys.exit(main())

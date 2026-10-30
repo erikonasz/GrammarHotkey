@@ -1,11 +1,12 @@
-# QuickFix AI
+# GrammarHotkey
 
-Select text in any Windows app, press a shortcut, and the text is corrected in place. No copy-pasting into
-a chat window. It runs through the [Claude Code](https://claude.com/claude-code) CLI you already have, on your
+Fix grammar and spelling in any Windows app with one hotkey. Select text, press a shortcut, and it is corrected
+in place, with no copy-pasting into a chat window. It runs through the [Claude Code](https://claude.com/claude-code) CLI you already have, on your
 own login. There is no API key, no account and no server of ours.
 
-Built for Lithuanian and English: restores missing letters (ą č ę ė į š ų ū ž), fixes grammar and commas, and
-leaves your tone, slang, emoji, names, links and code alone.
+Works in any language: Claude detects the language and keeps it, and never translates. It restores missing
+accents and special letters (such as ą č ę ė š ž, or ä ö ü ß), fixes grammar and commas, and leaves your tone, slang,
+emoji, names, links and code alone.
 
 | Shortcut | Mode | What it does |
 |---|---|---|
@@ -24,10 +25,10 @@ You need Windows 10 or 11, and a Claude plan with Claude Code.
    ```
    claude auth login
    ```
-2. Download `QuickFixAI.exe` from [Releases](../../releases) and run it. No installation or admin rights needed.
+2. Download `GrammarHotkey.exe` from [Releases](../../releases) and run it. No installation or admin rights needed.
    The exe is not code-signed, so Windows SmartScreen may warn you: choose *More info*, then *Run anyway*.
    It is built by a [public workflow](.github/workflows/release.yml), or you can build it yourself (below).
-3. A blue **Q** appears in the tray. Double-click it for Settings, where you can turn on *Start with Windows*.
+3. A blue **G** appears in the tray. Double-click it for Settings, where you can turn on *Start with Windows*.
 
 Select some text and press `Ctrl+Alt+G`. Undo with `Ctrl+Z` in that app, as with any paste.
 
@@ -38,7 +39,7 @@ Each correction starts a fresh `claude -p` process, so it takes a few seconds ra
 
 Requests count against your Claude plan's limits, the same as using Claude Code yourself. See Anthropic's page
 on [using `claude -p` with your plan](https://support.claude.com/en/articles/15036540). If `ANTHROPIC_API_KEY`
-or `ANTHROPIC_AUTH_TOKEN` is set, the CLI would bill that instead of your plan, so QuickFix AI warns you and
+or `ANTHROPIC_AUTH_TOKEN` is set, the CLI would bill that instead of your plan, so GrammarHotkey warns you and
 removes them for its own requests.
 
 ## Privacy and safety
@@ -68,7 +69,7 @@ pictures, files).
 - **Apps running as administrator** can't receive the keys from a normal app, so nothing happens. Windows blocks this.
 - **Games and some custom text fields** ignore simulated Ctrl+C / Ctrl+V.
 - **Clipboard history:** your app's own copy of the selection can briefly appear in Win+V history, because Windows
-  records it before QuickFix AI can act. The corrected text and the restored clipboard are marked to stay out of it.
+  records it before GrammarHotkey can act. The corrected text and the restored clipboard are marked to stay out of it.
 - **Ctrl+Alt is the same as AltGr** on many keyboards. The defaults G, P and R don't type anything with AltGr on
   the Lithuanian layouts we checked, but digits do (AltGr+1 is `@` on Lithuanian Standard). Settings warns about
   conflicts with the layouts you have installed.
@@ -82,7 +83,7 @@ pictures, files).
 build.bat
 ```
 
-This runs the tests and writes `dist\QuickFixAI.exe`. To run without building: `python run.pyw` after
+This runs the tests and writes `dist\GrammarHotkey.exe`. To run without building: `python run.pyw` after
 `pip install -r requirements.txt`.
 
 Tests:
@@ -98,7 +99,7 @@ The desktop tests take over keyboard focus while they run.
 ## Notice
 
 An independent project, not made by or affiliated with Anthropic. "Claude" is a trademark of Anthropic. Each
-user signs in to the official, unmodified Claude Code CLI themselves. QuickFix AI never sees, stores or forwards
+user signs in to the official, unmodified Claude Code CLI themselves. GrammarHotkey never sees, stores or forwards
 credentials. Your use stays subject to [Anthropic's terms](https://code.claude.com/docs/en/legal-and-compliance),
 which say that plan limits assume ordinary, individual use. Anthropic can change these rules.
 
@@ -109,11 +110,12 @@ License: [MIT](LICENSE).
 ## Lietuviškai
 
 Pažymi tekstą bet kurioje Windows programoje, paspaudi `Ctrl+Alt+G`, ir tekstas pataisomas toje pačioje vietoje.
+Veikia ir lietuviškai, ir kitomis kalbomis: kalba atpažįstama automatiškai ir nekeičiama.
 Naudoja tavo paties Claude Code CLI prisijungimą: jokių API raktų, jokių mūsų serverių.
 
 1. Įsidiek Claude Code ir terminale paleisk `claude auth login`.
-2. Iš [Releases](../../releases) atsisiųsk `QuickFixAI.exe` ir paleisk. Jei Windows perspės: *More info* → *Run anyway*.
-3. Dėkle atsiras mėlyna **Q**. Dukart spustelėjus atsidaro nustatymai.
+2. Iš [Releases](../../releases) atsisiųsk `GrammarHotkey.exe` ir paleisk. Jei Windows perspės: *More info* → *Run anyway*.
+3. Dėkle atsiras mėlyna **G**. Dukart spustelėjus atsidaro nustatymai.
 
 Vienas taisymas užtrunka kelias sekundes ir skaičiuojamas į tavo Claude plano limitus. Tekstas siunčiamas tik
 Anthropic per tavo CLI, istorija nesaugoma. Jei įklijuoti nesaugu, atsidaro langas su rezultatu, o tavo tekstas lieka

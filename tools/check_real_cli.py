@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from quickfix import claude_cli as c, config, guard  # noqa: E402
+from grammarhotkey import claude_cli as c, config, guard  # noqa: E402
 
 cfg = config.load()
 mode = next(m for m in config.default_modes() if m.id == "grammar")

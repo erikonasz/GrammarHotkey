@@ -1,6 +1,6 @@
 name: Release
 
-# Pushing a tag like v0.1.0 tests the code, builds QuickFixAI.exe on GitHub's own runner and attaches it
+# Pushing a tag like v0.1.0 tests the code, builds GrammarHotkey.exe on GitHub's own runner and attaches it
 # to a release, so anyone can see exactly how the download was made.
 on:
   push:
@@ -19,8 +19,8 @@ jobs:
           python-version: "3.14"
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pytest tests -q
-      - run: python -m PyInstaller --noconfirm --clean --onefile --windowed --name QuickFixAI --icon assets\icon.ico run.pyw
+      - run: python -m PyInstaller --noconfirm --clean --onefile --windowed --name GrammarHotkey --icon assets\icon.ico run.pyw
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ github.ref_name }}" dist\QuickFixAI.exe --title "QuickFix AI ${{ github.ref_name }}" --generate-notes
+        run: gh release create "${{ github.ref_name }}" dist\GrammarHotkey.exe --title "GrammarHotkey ${{ github.ref_name }}" --generate-notes

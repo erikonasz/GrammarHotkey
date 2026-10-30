@@ -95,7 +95,7 @@ def billing_warning(base: dict | None = None) -> str:
     if not found:
         return ""
     return (f"{' and '.join(found)} is set on this PC. It would bill the API instead of your subscription, "
-            "so QuickFix AI removes it for its own requests.")
+            "so GrammarHotkey removes it for its own requests.")
 
 
 def build_args(claude: str, model: str, effort: str, schema: bool = True) -> list[str]:

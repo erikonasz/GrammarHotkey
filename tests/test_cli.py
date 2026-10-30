@@ -3,7 +3,7 @@ import re
 
 import pytest
 
-from quickfix import claude_cli as c
+from grammarhotkey import claude_cli as c
 
 
 def test_args_are_safe_for_a_cmd_wrapper_and_never_skip_permissions():
@@ -122,7 +122,7 @@ def test_runner_does_not_resend_text_after_other_failures(monkeypatch, kind, det
 
 
 def test_cancel_before_the_process_exists_is_honoured(tmp_path, monkeypatch):
-    monkeypatch.setenv("QUICKFIX_CONFIG_DIR", str(tmp_path))
+    monkeypatch.setenv("GRAMMARHOTKEY_CONFIG_DIR", str(tmp_path))
     fake = tmp_path / "claude.exe"
     fake.write_bytes(b"")
     runner = c.ClaudeRunner()

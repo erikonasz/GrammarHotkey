@@ -242,7 +242,7 @@ def window_process_name(hwnd: int) -> str:
         kernel32.CloseHandle(handle)
 
 
-def single_instance(name: str = "QuickFixAI-single-instance") -> bool:
+def single_instance(name: str = "GrammarHotkey-single-instance") -> bool:
     """Keeps the mutex for the life of the process."""
     handle = kernel32.CreateMutexW(None, False, name)
     return bool(handle) and ctypes.get_last_error() != 183  # ERROR_ALREADY_EXISTS

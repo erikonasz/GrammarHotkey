@@ -1,4 +1,4 @@
-from quickfix.guard import check
+from grammarhotkey.guard import check
 
 
 def test_keeps_a_good_result():

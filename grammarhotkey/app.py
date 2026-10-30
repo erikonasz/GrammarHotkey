@@ -17,7 +17,7 @@ from .settings_ui import SettingsDialog, hotkey_warning
 from .ui_widgets import Indicator, ResultPopup, app_icon
 
 WM_HOTKEY = 0x0312
-log = logging.getLogger("quickfix")
+log = logging.getLogger("grammarhotkey")
 
 
 def setup_logging() -> None:
@@ -219,7 +219,7 @@ def main() -> int:
     qt_app.setApplicationName(APP_NAME)
     qt_app.setQuitOnLastWindowClosed(False)
     if not winapi.single_instance():
-        QMessageBox.information(None, APP_NAME, f"{APP_NAME} is already running. Look for the blue Q in the tray.")
+        QMessageBox.information(None, APP_NAME, f"{APP_NAME} is already running. Look for the blue G in the tray.")
         return 0
     setup_logging()
     if not QSystemTrayIcon.isSystemTrayAvailable():

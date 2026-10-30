@@ -23,12 +23,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from quickfix import winapi  # noqa: E402
+from grammarhotkey import winapi  # noqa: E402
 
 user32 = winapi.user32
 PY = str(ROOT / ".venv/Scripts/python.exe")
 FAKE = str(ROOT / "tests/fake_claude.cmd")
-POPUP_TITLE = "QuickFix AI: not pasted"
+POPUP_TITLE = "GrammarHotkey: not pasted"
 EXE = ""  # --exe: test the packaged build instead of the sources
 results: list[tuple[str, bool, str]] = []
 
@@ -158,11 +158,11 @@ class App:
         self.set_mode("ok")
         self.count_file.write_text("", encoding="utf-8")
         (workdir / "config.json").write_text(json.dumps(config), encoding="utf-8")
-        env = dict(os.environ, QUICKFIX_CONFIG_DIR=str(workdir), FAKE_CLAUDE_MODE_FILE=str(self.mode_file),
+        env = dict(os.environ, GRAMMARHOTKEY_CONFIG_DIR=str(workdir), FAKE_CLAUDE_MODE_FILE=str(self.mode_file),
                    FAKE_CLAUDE_COUNT_FILE=str(self.count_file))
         self.log = workdir / "app.log"
         log_start = len(self.log_text()) if self.log.exists() else 0  # the log survives between runs
-        command = [EXE] if EXE else [PY, "-X", "utf8", "-m", "quickfix"]
+        command = [EXE] if EXE else [PY, "-X", "utf8", "-m", "grammarhotkey"]
         self.proc = subprocess.Popen(command, cwd=ROOT, env=env)
         end = time.time() + 15
         while time.time() < end:
@@ -436,13 +436,13 @@ def cleanup_windows() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--real", action="store_true")
-    parser.add_argument("--exe", default="", help="path to QuickFixAI.exe")
+    parser.add_argument("--exe", default="", help="path to GrammarHotkey.exe")
     args = parser.parse_args()
     global EXE
     EXE = args.exe
 
     saved = winapi.snapshot_clipboard()
-    work = Path(tempfile.mkdtemp(prefix="quickfix_e2e_"))
+    work = Path(tempfile.mkdtemp(prefix="grammarhotkey_e2e_"))
     doc = work / "qf-e2e-notepad.txt"
     doc.write_text("", encoding="utf-8")
     page = work / "qf-e2e-chrome.html"

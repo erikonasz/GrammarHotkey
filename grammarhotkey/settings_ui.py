@@ -31,7 +31,7 @@ def autostart_command() -> str:
 def autostart_enabled() -> bool:
     try:
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, _RUN_KEY) as key:
-            winreg.QueryValueEx(key, "QuickFixAI")
+            winreg.QueryValueEx(key, "GrammarHotkey")
         return True
     except OSError:
         return False
@@ -40,10 +40,10 @@ def autostart_enabled() -> bool:
 def set_autostart(enabled: bool) -> None:
     with winreg.OpenKey(winreg.HKEY_CURRENT_USER, _RUN_KEY, 0, winreg.KEY_SET_VALUE) as key:
         if enabled:
-            winreg.SetValueEx(key, "QuickFixAI", 0, winreg.REG_SZ, autostart_command())
+            winreg.SetValueEx(key, "GrammarHotkey", 0, winreg.REG_SZ, autostart_command())
         else:
             try:
-                winreg.DeleteValue(key, "QuickFixAI")
+                winreg.DeleteValue(key, "GrammarHotkey")
             except OSError:
                 pass
 

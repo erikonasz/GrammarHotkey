@@ -26,7 +26,7 @@ def app_icon(busy: bool = False) -> QIcon:
         font.setBold(True)
         font.setPixelSize(int(size * 0.72))
         p.setFont(font)
-        p.drawText(pix.rect(), Qt.AlignmentFlag.AlignCenter, "Q")
+        p.drawText(pix.rect(), Qt.AlignmentFlag.AlignCenter, "G")
         p.end()
         icon.addPixmap(pix)
     return icon

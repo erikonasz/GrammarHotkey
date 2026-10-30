@@ -1,4 +1,4 @@
-"""Settings stored as JSON in %APPDATA%\\QuickFixAI\\config.json. Selected text is never stored."""
+"""Settings stored as JSON in %APPDATA%\\GrammarHotkey\\config.json. Selected text is never stored."""
 from __future__ import annotations
 
 import json
@@ -7,10 +7,10 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 GRAMMAR_PROMPT = (
-    "Correct spelling, grammar, punctuation and diacritics only. The text is usually Lithuanian or "
-    "English, sometimes both: detect the language of each part and keep it, never translate. "
-    "In Lithuanian, restore missing letters such as ą č ę ė į š ų ū ž and fix case endings and comma "
-    "placement. Keep the meaning, tone, register, slang, swearing, emoji, line breaks, paragraphs, "
+    "Correct spelling, grammar, punctuation and diacritics only. The text can be in any language or a "
+    "mix of languages: detect the language of each part and keep it, never translate. "
+    "Restore missing accents and special letters (for example ą č ę ė š ž in Lithuanian, ä ö ü ß in "
+    "German, é è ç in French). Keep the meaning, tone, register, slang, swearing, emoji, line breaks, paragraphs, "
     "names, URLs, e-mail addresses, numbers, code and formatting exactly as they are. Do not rewrite "
     "sentences that are already correct, do not make the text more formal and do not add anything. "
     "If nothing needs fixing, return the text unchanged."
@@ -72,10 +72,10 @@ class Config:
 
 
 def config_dir() -> Path:
-    override = os.environ.get("QUICKFIX_CONFIG_DIR")
+    override = os.environ.get("GRAMMARHOTKEY_CONFIG_DIR")
     if override:
         return Path(override)
-    return Path(os.environ.get("APPDATA") or Path.home()) / "QuickFixAI"
+    return Path(os.environ.get("APPDATA") or Path.home()) / "GrammarHotkey"
 
 
 def config_path() -> Path:
@@ -84,10 +84,10 @@ def config_path() -> Path:
 
 def data_dir() -> Path:
     """Holds the rotating metadata log and the empty working directory given to the CLI."""
-    override = os.environ.get("QUICKFIX_CONFIG_DIR")
+    override = os.environ.get("GRAMMARHOTKEY_CONFIG_DIR")
     if override:
         return Path(override)
-    return Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "QuickFixAI"
+    return Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "GrammarHotkey"
 
 
 def from_dict(raw: dict) -> Config:

@@ -3,10 +3,10 @@ import os
 
 import pytest
 
-from quickfix import winapi
-from quickfix.claude_cli import CliError, CliResult, NOT_LOGGED_IN, TIMEOUT
-from quickfix.config import Config, Mode
-from quickfix.pipeline import (CLIPBOARD_MSG, FOCUS_MSG, KEYS_MSG, SELECTION_MSG, Pipeline, Status)
+from grammarhotkey import winapi
+from grammarhotkey.claude_cli import CliError, CliResult, NOT_LOGGED_IN, TIMEOUT
+from grammarhotkey.config import Config, Mode
+from grammarhotkey.pipeline import (CLIPBOARD_MSG, FOCUS_MSG, KEYS_MSG, SELECTION_MSG, Pipeline, Status)
 
 
 class Sim:

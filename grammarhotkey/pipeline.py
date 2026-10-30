@@ -9,7 +9,7 @@ from enum import Enum
 from . import guard, winapi
 from .claude_cli import CliError
 
-log = logging.getLogger("quickfix")
+log = logging.getLogger("grammarhotkey")
 
 
 class Status(Enum):
@@ -74,7 +74,7 @@ class Pipeline:
         except winapi.ClipboardBusy:
             return Outcome(Status.ERROR, "Another program is holding the clipboard. Try again.")
         if not text or not text.strip():
-            hint = "" if exe else " If this app runs as administrator, QuickFix AI cannot read it."
+            hint = "" if exe else " If this app runs as administrator, GrammarHotkey cannot read it."
             return Outcome(Status.ERROR, "No text is selected." + hint)
         if len(text) > cfg.max_chars:
             return Outcome(Status.ERROR, f"The selection is too long ({len(text)} characters, the limit is "
